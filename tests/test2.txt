@@ -1,0 +1,26 @@
+/*
+int::foo() then
+    return 5+4;
+end
+
+int::b = foo();
+
+println b;
+*/
+
+/*
+int::foo(int::i) then
+    if(i<10) then
+        i=i+1;
+        return foo(i)
+    end else then
+        return i
+    end
+end
+
+int::b = foo(0);
+
+println b;
+*/
+
+println 2+2*2;

@@ -1,0 +1,14 @@
+int::i=0;
+
+int::rec() then
+    i = i + 1;
+    println i;
+
+    if( i<=10 ) then
+        rec();
+    end
+end
+
+rec();
+
+println i;

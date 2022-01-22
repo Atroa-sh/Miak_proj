@@ -1,0 +1,17 @@
+bool::a = true;
+bool::b = false;
+
+println a==true;
+println b==false;
+
+println !a==false;
+println !b==true;
+
+println (a and b)==false;
+println (a or b)==true;
+
+println !(a and b)==true;
+println !(a or b)==false;
+
+println (a and !b)==true;
+println (!a or b)==false;

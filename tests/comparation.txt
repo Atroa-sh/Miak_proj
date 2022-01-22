@@ -1,0 +1,43 @@
+int::ai = 1;
+int::bi = 2;
+int::ci = 3;
+
+double::ad = 1.0;
+double::bd = 2.0;
+double::cd = 3.0;
+
+if( ai < bi ) then
+    println "1 < 2";
+end
+
+if( ci < ai ) then
+    println "3 < 1";
+end
+
+if( ai == ad ) then
+    println "1 == 1.";
+end
+
+if( ai == bd ) then
+    println "1 == 2.";
+end
+
+if( ai >= ad ) then
+    println "2 >= 2.";
+end
+
+if( bd <= ci ) then
+    println "2. <= 3";
+end
+
+if( cd <= bi ) then
+    println "3. <= 2";
+end
+
+if( !false ) then
+    println "not false is true";
+end
+
+if( !true ) then
+    println "not true is false";
+end

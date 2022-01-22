@@ -1,0 +1,17 @@
+int::a = 2;
+
+if(a==2) then
+    println "equals 2";
+end
+
+if(a=="2") then
+    println "a is a string";
+end
+
+if(a==3) then println "a==3"; end
+
+if(a==2.0) then println "casting is already here"; end
+
+if(2==a) then
+    println "other way around";
+end

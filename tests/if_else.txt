@@ -1,0 +1,21 @@
+int::a = 5;
+
+if(a == 1) then
+    println "a == 1";
+end
+
+if(a == 1) then
+    println "a == 1";
+end else then
+    println "else a == 1";
+end
+
+if(a == 1) then
+    println "a == 1";
+end else if(a == 6) then
+    println "a == 6";
+end else if(a +2 == 7) then
+    print "a+2 == 7";
+end else then
+    println "eventual else";
+end

@@ -1,0 +1,14 @@
+string::barS(string::s) then
+    println s;
+    return s;
+end
+
+string::fooS(string::s) then
+    string::res = barS(s);
+
+    println res;
+
+    return res;
+end
+
+fooS("text");
