@@ -391,10 +391,21 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
     public Object visitCreateScene(AniLangParser.CreateSceneContext ctx) {
         // TODO: czy Scene ma dwa argumenty
         // TODO: czy argumenty to int
-
+        int[] args = new int[2];
+        if(ctx.expr().size()!=2) raiseError(
+                String.format("Wrong number of arguments. Got %d, expected 2", ctx.expr().size()),
+                ctx.getStart().getLine()
+        );
+        for(int i = 0 ; i < 2 ; i++){
+            Expression tmp = ((Expression)this.visitExpr(ctx.expr(i)));
+            if(tmp.type == Type.boolType){
+                raiseError("Wrong argument type",ctx.getStart().getLine());
+            }
+            else args[i] = (int)tmp.value;
+        }
         this.scene = new Scene(
-                (int) ((Expression) this.visitExpr(ctx.expr(0))).value,
-                (int) ((Expression) this.visitExpr(ctx.expr(1))).value
+                args[0],
+                args[1]
         );
 
         return super.visitCreateScene(ctx);
@@ -405,17 +416,31 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
         // TODO: czy Box ma 9 argumentów
         // TODO: czy argumenty to int
         // TODO: czy scena powstala wczesniej
+        int[] args = new int[9];
+        if(ctx.expr().size()!=9) raiseError(
+                "Wrong number of arguments. Got %d, expected 9",
+                ctx.getStart().getLine()
+        );
+        if(scene == null)
+            raiseError("Shape was created before the scene",ctx.getStart().getLine());
+        for(int i = 0 ; i < 9 ; i++){
+            Expression tmp = ((Expression)this.visitExpr(ctx.expr(i)));
+            if(tmp.type == Type.boolType){
+                raiseError("Wrong argument type",ctx.getStart().getLine());
+            }
+            else args[i] = (int)tmp.value;
+        }
 
         this.scene.addShape(new Box(
-                (int) ((Expression) this.visitExpr(ctx.expr(0))).value,
-                (int) ((Expression) this.visitExpr(ctx.expr(1))).value,
-                (int) ((Expression) this.visitExpr(ctx.expr(2))).value,
-                (int) ((Expression) this.visitExpr(ctx.expr(3))).value,
-                (int) ((Expression) this.visitExpr(ctx.expr(4))).value,
-                (int) ((Expression) this.visitExpr(ctx.expr(5))).value,
-                (int) ((Expression) this.visitExpr(ctx.expr(6))).value,
-                (int) ((Expression) this.visitExpr(ctx.expr(7))).value,
-                (int) ((Expression) this.visitExpr(ctx.expr(8))).value
+                args[0],
+                args[1],
+                args[2],
+                args[3],
+                args[4],
+                args[5],
+                args[6],
+                args[7],
+                args[8]
         ));
 
         return super.visitCreateBox(ctx);
@@ -436,7 +461,7 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
             fw.flush();
             fw.close();
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred when creating output file.");
             e.printStackTrace();
         }
 

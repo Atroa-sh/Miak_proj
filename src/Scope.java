@@ -40,15 +40,15 @@ public class Scope {
         else
             res = this.parentScope.getVariable(id);
 
-        if (res == null) throw new Exception(String.format("No variable named %s in this scope", id));
+        if (res == null) throw new Exception(String.format("No variable named %s in this scope.", id));
         return res;
     }
 
 
     public Variable getOuterVariable(String id) throws Exception {
-        if( this.parentScope==null ) throw new Exception("Outer keyword used in top scope");
+        if( this.parentScope==null ) throw new Exception("Outer keyword used in top scope.");
         Variable res = this.parentScope.getOuterVariableRec(id);
-        if (res == null) throw new Exception(String.format("No variable named %s in this scope", id));
+        if (res == null) throw new Exception(String.format("No variable named %s in this scope.", id));
         return res;
     }
     private Variable getOuterVariableRec(String id) {
@@ -66,12 +66,12 @@ public class Scope {
     }
 
     public Function getFunction(String id) throws Exception {
-            Function res;
-        if( this.parentScope==null || this.functionMap.containsKey(id))   res = this.functionMap.get(id);
+        Function res;
+        if( this.parentScope==null || this.functionMap.containsKey(id))
+            res = this.functionMap.get(id);
         else
-                     res = this.parentScope.getFunction(id);
-
-        if ( res == null ) throw new Exception(String.format("No function named %s in this scope", id));
+            res = this.parentScope.getFunction(id);
+        if ( res == null ) throw new Exception(String.format("No function named %s in this scope.", id));
         return res;
     }
 
@@ -84,22 +84,22 @@ public class Scope {
 
 
     public void declareVariable(Variable var) throws Exception {
-        if( this.containsFunction(var.getId()) ) throw new Exception(String.format("a function with name %s already exists", var.getId()));
+        if( this.containsFunction(var.getId()) ) throw new Exception(String.format("A function with name %s already exists.", var.getId()));
 
         if(!variableMap.containsKey(var.getId()))
             variableMap.put(var.getId(), var);
 
-        else throw new Exception(String.format("Variable with id %s already declared in this scope", var.getId()));
+        else throw new Exception(String.format("Variable with id %s already declared in this scope.", var.getId()));
     }
 
     public void assignVariable(String id, Expression exp) throws Exception {
-        if(this.containsFunction(id) ) throw new Exception(String.format("assignment to function %s", id));
+        if(this.containsFunction(id) ) throw new Exception(String.format("Assignment to function %s.", id));
 
         Variable found = this.getVariable(id);
         if(found != null)
             found.assignValue(exp);
 
-        else throw new Exception(String.format("Variable with id %s not declared in this scope", id));
+        else throw new Exception(String.format("Variable with id %s not declared in this scope.", id));
     }
 
     public void declareFunction(String id, Type returnType, List<Type> argTypes, List<TerminalNode> argId, AniLangParser.Function_declarationContext ctx) throws Exception {
