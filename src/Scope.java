@@ -48,15 +48,14 @@ public class Scope {
     public Variable getOuterVariable(String id) throws Exception {
         if( this.parentScope==null ) throw new Exception("Outer keyword used in top scope.");
         Variable res = this.parentScope.getOuterVariableRec(id);
-        if (res == null) throw new Exception(String.format("No variable named %s in this scope.", id));
+        if (res == null) throw new Exception(String.format("No variable named %s in parent scope.", id));
         return res;
     }
     private Variable getOuterVariableRec(String id) {
         if( this.variableMap.containsKey(id) && !ignorableAsParent)  return this.variableMap.get(id);
 
-        Variable res = this.parentScope.getOuterVariableRec(id);
-
-        return res;
+        if( this.parentScope == null )  return null;
+        else                            return this.parentScope.getOuterVariableRec(id);
     }
     public Boolean containsVariable(String id) {
         if( this.parentScope==null )            return this.variableMap.containsKey(id);

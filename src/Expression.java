@@ -41,9 +41,16 @@ public class Expression {
 
     public Expression add(Expression right) throws Exception {
 
+        // incompatible types error
         if(
-                this.type != Type.intType || this.type != Type.doubleType ||
-                right.type != Type.intType || right.type != Type.doubleType
+                (
+                        this.type  != Type.intType      &&
+                        this.type  != Type.doubleType
+                )                                       ||
+                (
+                        right.type != Type.intType      &&
+                        right.type != Type.doubleType
+                )
         ) throw new Exception(String.format("No viable operator + for types %s and %s", this.type.toString(), right.type.toString()));
 
         if(this.type == Type.doubleType && right.type == Type.intType){
@@ -52,16 +59,25 @@ public class Expression {
         else if(this.type == Type.intType && right.type == Type.doubleType){
             return new Expression(Type.doubleType, (Integer)this.value + (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.doubleType){
+        else if(this.type == Type.doubleType){
             return new Expression(Type.doubleType, (Double)this.value + (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.intType){
-            return new Expression(Type.intType, (Integer)this.value + (Integer) right.value);
-        }
-
-        return null;
+        return new Expression(Type.intType, (Integer)this.value + (Integer) right.value);
     }
-    public Expression mul(Expression right){
+
+    public Expression mul(Expression right) throws Exception {
+
+        // incompatible types error
+        if(
+                (
+                        this.type  != Type.intType      &&
+                        this.type  != Type.doubleType
+                )                                       ||
+                (
+                        right.type != Type.intType      &&
+                        right.type != Type.doubleType
+                )
+        ) throw new Exception(String.format("No viable operator * for types %s and %s", this.type.toString(), right.type.toString()));
 
         if(this.type == Type.doubleType && right.type == Type.intType){
             return new Expression(Type.doubleType, (Double)this.value * (Integer)right.value);
@@ -69,17 +85,31 @@ public class Expression {
         else if(this.type == Type.intType && right.type == Type.doubleType){
             return new Expression(Type.doubleType, (Integer)this.value * (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.doubleType){
+        else if(this.type == Type.doubleType){
             return new Expression(Type.doubleType, (Double)this.value * (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.intType){
-            return new Expression(Type.intType, (Integer)this.value * (Integer) right.value);
-        }
-
-        return null;
+        return new Expression(Type.intType, (Integer)this.value * (Integer) right.value);
     }
 
-    public Expression div(Expression right){
+    public Expression div(Expression right) throws Exception {
+
+        // incompatible types error
+        if(
+                (
+                        this.type  != Type.intType      &&
+                        this.type  != Type.doubleType
+                )                                       ||
+                (
+                        right.type != Type.intType      &&
+                        right.type != Type.doubleType
+                )
+        ) throw new Exception(String.format("No viable operator / for types %s and %s", this.type.toString(), right.type.toString()));
+
+        // dividing by 0
+        if(
+                (right.type == Type.intType    && (Integer) right.value == 0) ||
+                (right.type == Type.doubleType && (Double)  right.value == 0.)
+        ) throw new Exception("Cannot divide by 0");
 
         if(this.type == Type.doubleType && right.type == Type.intType){
             return new Expression(Type.doubleType, (Double)this.value / (double) (Integer)right.value);
@@ -87,17 +117,25 @@ public class Expression {
         else if(this.type == Type.intType && right.type == Type.doubleType){
             return new Expression(Type.doubleType, (double) (Integer) this.value / (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.doubleType){
+        else if(this.type == Type.doubleType){
             return new Expression(Type.doubleType, (Double)this.value / (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.intType){
-            return new Expression(Type.intType, (Integer)this.value / (Integer) right.value);
-        }
-
-        return null;
+        return new Expression(Type.intType, (Integer)this.value / (Integer) right.value);
     }
 
-    public Expression sub(Expression right){
+    public Expression sub(Expression right) throws Exception {
+
+        // incompatible types error
+        if(
+                (
+                        this.type  != Type.intType      &&
+                        this.type  != Type.doubleType
+                )                                       ||
+                (
+                        right.type != Type.intType      &&
+                        right.type != Type.doubleType
+                )
+        ) throw new Exception(String.format("No viable operator - for types %s and %s", this.type.toString(), right.type.toString()));
 
         if(this.type == Type.doubleType && right.type == Type.intType){
             return new Expression(Type.doubleType, (Double)this.value - (Integer)right.value);
@@ -105,112 +143,157 @@ public class Expression {
         else if(this.type == Type.intType && right.type == Type.doubleType){
             return new Expression(Type.doubleType, (Integer)this.value - (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.doubleType){
+        else if(this.type == Type.doubleType){
             return new Expression(Type.doubleType, (Double)this.value - (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.intType){
-            return new Expression(Type.intType, (Integer)this.value - (Integer) right.value);
-        }
-
-        return null;
+        return new Expression(Type.intType, (Integer)this.value - (Integer) right.value);
     }
 
-    public Expression pow(Expression right) {
+    public Expression pow(Expression right) throws Exception {
+
+        // incompatible types error
+        if(
+                (
+                        this.type  != Type.intType      &&
+                        this.type  != Type.doubleType
+                )                                       ||
+                (
+                        right.type != Type.intType      &&
+                        right.type != Type.doubleType
+                )
+        ) throw new Exception(String.format("No viable operator ** for types %s and %s", this.type.toString(), right.type.toString()));
+
         if(this.type == Type.doubleType && right.type == Type.intType){
             return new Expression(Type.doubleType, Math.pow((Double)this.value, (Integer)right.value))  ;
         }
         else if(this.type == Type.intType && right.type == Type.doubleType){
             return new Expression(Type.doubleType, Math.pow((Integer)this.value, (Double)right.value));
         }
-        else if(this.type == right.type && this.type == Type.doubleType){
-            return new Expression(Type.doubleType, Math.pow((Integer)this.value, (Double)right.value));
+        else if(this.type == Type.doubleType) {
+            return new Expression(Type.doubleType, Math.pow((Integer) this.value, (Double) right.value));
         }
-        else if(this.type == right.type && this.type == Type.intType){
-            return new Expression(Type.doubleType, Math.pow((Integer)this.value, (Integer)right.value));
-        }
-
-        return null;
+        return new Expression(Type.doubleType, Math.pow((Integer)this.value, (Integer)right.value));
     }
 
-    public Expression neg(){
+    public Expression neg() throws Exception {
+        // incompatible type error
+        if(
+                this.type  != Type.intType      &&
+                this.type  != Type.doubleType
+        ) throw new Exception(String.format("No viable operator - for type %s", this.type.toString()));
+
         if(this.type == Type.doubleType){
             return new Expression(Type.doubleType, -(Double)this.value);
         }
-        if(this.type == Type.intType){
-            return new Expression(Type.intType, -(Integer)this.value);
-        }
-        return null;
+        return new Expression(Type.intType, -(Integer)this.value);
     }
 
-    public Expression lesser(Expression right) {
+    public Expression lesser(Expression right) throws Exception {
+
+        // incompatible types error
+        if(
+                (
+                        this.type  != Type.intType      &&
+                        this.type  != Type.doubleType
+                )                                       ||
+                (
+                        right.type != Type.intType      &&
+                        right.type != Type.doubleType
+                )
+        ) throw new Exception(String.format("No viable operator < for types %s and %s", this.type.toString(), right.type.toString()));
+
+
         if(this.type == Type.doubleType && right.type == Type.intType){
             return new Expression(Type.boolType, (Double)this.value < (Integer)right.value);
         }
         else if(this.type == Type.intType && right.type == Type.doubleType){
             return new Expression(Type.boolType, (Integer)this.value < (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.doubleType){
+        else if(this.type == Type.doubleType){
             return new Expression(Type.boolType, (Double)this.value < (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.intType){
-            return new Expression(Type.boolType, (Integer)this.value < (Integer) right.value);
-        }
-
-        return null;
+        return new Expression(Type.boolType, (Integer)this.value < (Integer) right.value);
     }
 
-    public Expression greater(Expression right) {
+    public Expression greater(Expression right) throws Exception {
+        // incompatible types error
+        if(
+                (
+                        this.type  != Type.intType      &&
+                        this.type  != Type.doubleType
+                )                                       ||
+                (
+                        right.type != Type.intType      &&
+                        right.type != Type.doubleType
+                )
+        ) throw new Exception(String.format("No viable operator > for types %s and %s", this.type.toString(), right.type.toString()));
+
         if(this.type == Type.doubleType && right.type == Type.intType){
             return new Expression(Type.boolType, (Double)this.value > (Integer)right.value);
         }
         else if(this.type == Type.intType && right.type == Type.doubleType){
             return new Expression(Type.boolType, (Integer)this.value > (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.doubleType){
+        else if(this.type == Type.doubleType){
             return new Expression(Type.boolType, (Double)this.value > (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.intType){
-            return new Expression(Type.boolType, (Integer)this.value > (Integer) right.value);
-        }
-
-        return null;
+        return new Expression(Type.boolType, (Integer)this.value > (Integer) right.value);
     }
 
-    public Expression leq(Expression right) {
+    public Expression leq(Expression right) throws Exception {
+
+        // incompatible types error
+        if(
+                (
+                        this.type  != Type.intType      &&
+                        this.type  != Type.doubleType
+                )                                       ||
+                (
+                        right.type != Type.intType      &&
+                        right.type != Type.doubleType
+                )
+        ) throw new Exception(String.format("No viable operator <= for types %s and %s", this.type.toString(), right.type.toString()));
+
         if(this.type == Type.doubleType && right.type == Type.intType){
             return new Expression(Type.boolType, (Double)this.value <= (Integer)right.value);
         }
         else if(this.type == Type.intType && right.type == Type.doubleType){
             return new Expression(Type.boolType, (Integer)this.value <= (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.doubleType){
+        else if(this.type == Type.doubleType){
             return new Expression(Type.boolType, (Double)this.value <= (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.intType){
-            return new Expression(Type.boolType, (Integer)this.value <= (Integer) right.value);
-        }
-
-        return null;
+        return new Expression(Type.boolType, (Integer)this.value <= (Integer) right.value);
     }
 
-    public Expression geq(Expression right) {
+    public Expression geq(Expression right) throws Exception {
+
+        // incompatible types error
+        if(
+                (
+                        this.type  != Type.intType      &&
+                        this.type  != Type.doubleType
+                )                                       ||
+                (
+                        right.type != Type.intType      &&
+                        right.type != Type.doubleType
+                )
+        ) throw new Exception(String.format("No viable operator >= for types %s and %s", this.type.toString(), right.type.toString()));
+
         if(this.type == Type.doubleType && right.type == Type.intType){
             return new Expression(Type.boolType, (Double)this.value >= (Integer)right.value);
         }
         else if(this.type == Type.intType && right.type == Type.doubleType){
             return new Expression(Type.boolType, (Integer)this.value >= (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.doubleType){
+        else if(this.type == Type.doubleType){
             return new Expression(Type.boolType, (Double)this.value >= (Double)right.value);
         }
-        else if(this.type == right.type && this.type == Type.intType){
-            return new Expression(Type.boolType, (Integer)this.value >= (Integer) right.value);
-        }
-
-        return null;
+        return new Expression(Type.boolType, (Integer)this.value >= (Integer) right.value);
     }
 
     public Expression eq(Expression right) {
+
         if(this.type == Type.doubleType && right.type == Type.intType){
             return new Expression(Type.boolType, (double) this.value - (int) right.value == 0);
         }
@@ -227,24 +310,32 @@ public class Expression {
         return new Expression( Type.boolType , this.value.equals( right.value ) );
     }
 
-    public Expression not() {
-        if(this.type == Type.boolType) {
-            return new Expression(Type.boolType, !(boolean) this.value);
-        }
-        return null;
+    public Expression not() throws Exception {
+        // incompatible type error
+        if(
+                this.type  != Type.boolType
+        ) throw new Exception(String.format("No viable operator 'not' for type %s", this.type.toString()));
+
+        return new Expression(Type.boolType, !(boolean) this.value);
     }
 
-    public Expression and(Expression right) {
-        if(this.type == Type.boolType && right.type == Type.boolType) {
-            return new Expression(Type.boolType, (boolean) this.value && (boolean) right.value);
-        }
-        return null;
+    public Expression and(Expression right) throws Exception {
+        // incompatible type error
+        if(
+                this.type   != Type.boolType ||
+                right.type  != Type.boolType
+        ) throw new Exception(String.format("No viable operator 'and' for types %s and %s", this.type.toString(), right.type.toString()));
+
+        return new Expression(Type.boolType, (boolean) this.value && (boolean) right.value);
     }
 
-    public Expression or(Expression right) {
-        if(this.type == Type.boolType && right.type == Type.boolType) {
-            return new Expression(Type.boolType, (boolean) this.value || (boolean) right.value);
-        }
-        return null;
+    public Expression or(Expression right) throws Exception {
+        // incompatible type error
+        if(
+                this.type   != Type.boolType ||
+                        right.type  != Type.boolType
+        ) throw new Exception(String.format("No viable operator 'or' for types %s and %s", this.type.toString(), right.type.toString()));
+
+        return new Expression(Type.boolType, (boolean) this.value || (boolean) right.value);
     }
 }

@@ -27,9 +27,9 @@ import java.util.*;
 
 // TODO: Błędy
 //      Expression ------------> Filip
-//      Scene -----------------> Kacper
+//      Scene -----------------> Kacper --------------------------- ✓
 //      Scope -----------------> Kacper --------------------------- ✓
-//      Box   -----------------> Kacper
+//      Box   -----------------> Kacper --------------------------- ✓
 //      Shape -----------------> Kacper
 
 public class TranslatorVisitor extends AniLangParserBaseVisitor {
@@ -168,7 +168,10 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
             super.visitFunction_declaration(func.getCtx());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            raiseError(
+                    e.getMessage(),
+                    ctx.getStart().getLine()
+            );
         }
 
         scopeStack.remove(getCurrentScope());
@@ -188,43 +191,28 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
         return new Expression(var.getType(), var.getValue());
     }
 
-//    @Override
-//    public Object visitBinaryExpr(AniLangParser.BinaryExprContext ctx) {
-//        Expression leftExpr = evaluateExpr(ctx.expr(0));
-//        Expression rightExpr = evaluateExpr(ctx.expr(1));
-//
-//        return switch ( (String) visitBinary_operator(ctx.binary_operator()) ) {
-//            // Arithmetic
-//            case "+" -> leftExpr.add(rightExpr);
-//            case "-" -> leftExpr.sub(rightExpr);
-//            case "*" -> leftExpr.mul(rightExpr);
-//            case "/" -> leftExpr.div(rightExpr);
-//            case "**" -> leftExpr.pow(rightExpr);
-//
-//            // Boolean
-//            case "and" -> leftExpr.and(rightExpr);
-//            case "or" -> leftExpr.or(rightExpr);
-//
-//            // Comparation
-//            case "<" -> leftExpr.lesser(rightExpr);
-//            case ">" -> leftExpr.greater(rightExpr);
-//            case "<=" -> leftExpr.leq(rightExpr);
-//            case ">=" -> leftExpr.geq(rightExpr);
-//            case "==" -> leftExpr.eq(rightExpr);
-//
-//            // Default
-//            default -> null;
-//        };
-//    }
-
     @Override // Or
     public Object visitExpr(AniLangParser.ExprContext ctx) {
+        if( ctx.expr_1(0) == null ) {
+            raiseError(
+                    "Expected expression, but got null",
+                    ctx.getStart().getLine()
+            );
+        }
+
         Expression result = (Expression) this.visitExpr_1(ctx.expr_1(0));
 
         if( ctx.Or(0) != null ) {
 
             for(int i=1; i<ctx.expr_1().size(); i++) {
-                result = result.or( (Expression) this.visitExpr_1(ctx.expr_1(i)) );
+                try {
+                    result = result.or( (Expression) this.visitExpr_1(ctx.expr_1(i)) );
+                } catch (Exception e) {
+                    raiseError(
+                            e.getMessage(),
+                            ctx.getStart().getLine()
+                    );
+                }
             }
         }
         return result;
@@ -232,12 +220,27 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
 
     @Override // And
     public Object visitExpr_1(AniLangParser.Expr_1Context ctx) {
+        if( ctx.expr_2(0) == null ) {
+            raiseError(
+                    "Expected expression, but got null",
+                    ctx.getStart().getLine()
+            );
+        }
+
         Expression result = (Expression) this.visitExpr_2(ctx.expr_2(0));
 
         if( ctx.And(0) != null ) {
 
             for(int i=1; i<ctx.expr_2().size(); i++) {
-                result = result.and( (Expression) this.visitExpr_2(ctx.expr_2(i)) );
+                try {
+                    result = result.and( (Expression) this.visitExpr_2(ctx.expr_2(i)) );
+                } catch (Exception e) {
+                    raiseError(
+                            e.getMessage(),
+                            ctx.getStart().getLine()
+                    );
+                }
+
             }
         }
         return result;
@@ -245,36 +248,68 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
 
     @Override // Lesser | Greater | Leq | Geq | Equals
     public Object visitExpr_2(AniLangParser.Expr_2Context ctx) {
+        if( ctx.expr_3(0) == null ) {
+            raiseError(
+                    "Expected expression, but got null",
+                    ctx.getStart().getLine()
+            );
+        }
+
         Expression left = (Expression) this.visitExpr_3(ctx.expr_3(0));
 
         if( ctx.expr_3().size() > 1 ) {
             Expression right = (Expression) this.visitExpr_3(ctx.expr_3(1));
 
-            return switch(ctx.ComparationToken().getText()) {
-                case "<" -> left.lesser(right);
-                case ">" -> left.greater(right);
-                case "<=" -> left.leq(right);
-                case ">=" -> left.geq(right);
-                case "==" -> left.eq(right);
+            Expression res = null;
 
-                default -> null;
-            };
+            try {
+                res = switch(ctx.ComparationToken().getText()) {
+                    case "<" -> left.lesser(right);
+                    case ">" -> left.greater(right);
+                    case "<=" -> left.leq(right);
+                    case ">=" -> left.geq(right);
+                    case "==" -> left.eq(right);
+
+                    default -> null;
+                };
+            } catch (Exception e) {
+                raiseError(
+                        e.getMessage(),
+                        ctx.getStart().getLine()
+                );
+            }
+
+            return res;
         }
         return left;
     }
 
     @Override // Minus
     public Object visitExpr_3(AniLangParser.Expr_3Context ctx) {
+        if( ctx.expr_4(0) == null ) {
+            raiseError(
+                    "Expected expression, but got null",
+                    ctx.getStart().getLine()
+            );
+        }
+
         Expression left = (Expression) this.visitExpr_4(ctx.expr_4(0));
 
         if( ctx.expr_4().size() > 1 ) {
             for(int i=1; i<ctx.expr_4().size(); i++) {
                 Expression right = (Expression) this.visitExpr_4(ctx.expr_4(i));
 
-                left = switch(ctx.Minus(i-1).getText()) {
-                    case "-" -> left.sub(right);
-                    default -> null;
-                };
+                try {
+                    left = switch(ctx.Minus(i-1).getText()) {
+                        case "-" -> left.sub(right);
+                        default -> null;
+                    };
+                } catch (Exception e) {
+                    raiseError(
+                            e.getMessage(),
+                            ctx.getStart().getLine()
+                    );
+                }
             }
         }
         return left;
@@ -282,6 +317,13 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
 
     @Override // Plus
     public Object visitExpr_4(AniLangParser.Expr_4Context ctx) {
+        if( ctx.expr_5(0) == null ) {
+            raiseError(
+                    "Expected expression, but got null",
+                    ctx.getStart().getLine()
+            );
+        }
+
         Expression left = (Expression) this.visitExpr_5(ctx.expr_5(0));
 
         if( ctx.expr_5().size() > 1 ) {
@@ -306,17 +348,31 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
 
     @Override // Star | Slash
     public Object visitExpr_5(AniLangParser.Expr_5Context ctx) {
+        if( ctx.expr_6(0) == null ) {
+            raiseError(
+                    "Expected expression, but got null",
+                    ctx.getStart().getLine()
+            );
+        }
+
         Expression left = (Expression) this.visitExpr_6(ctx.expr_6(0));
 
         if( ctx.expr_6().size() > 1 ) {
             for(int i=1; i<ctx.expr_6().size(); i++) {
                 Expression right = (Expression) this.visitExpr_6(ctx.expr_6(i));
 
-                left = switch(ctx.Star_Slash(i-1).getText()) {
-                    case "*" -> left.mul(right);
-                    case "/" -> left.div(right);
-                    default -> null;
-                };
+                try {
+                    left = switch(ctx.Star_Slash(i-1).getText()) {
+                        case "*" -> left.mul(right);
+                        case "/" -> left.div(right);
+                        default -> null;
+                    };
+                } catch (Exception e) {
+                    raiseError(
+                        e.getMessage(),
+                        ctx.getStart().getLine()
+                    );
+                }
             }
         }
         return left;
@@ -324,26 +380,50 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
 
     @Override // unary operator
     public Object visitExpr_6(AniLangParser.Expr_6Context ctx) {
+        if( ctx.expr_7() == null ) {
+            raiseError(
+                    "Expected expression, but got null",
+                    ctx.getStart().getLine()
+            );
+        }
+
         Expression result = (Expression) this.visitExpr_7(ctx.expr_7());
 
         if( ctx.unary_operator() != null ) {
 
-            return switch ( ctx.unary_operator().getText() ) {
-                // Arithmetic
-                case "-" -> result.neg();
+            Expression res = null;
 
-                // Boolean
-                case "!" -> result.not();
+            try {
+                res = switch ( ctx.unary_operator().getText() ) {
+                    // Arithmetic
+                    case "-" -> result.neg();
 
-                // Default
-                default -> null;
-            };
+                    // Boolean
+                    case "!" -> result.not();
+
+                    // Default
+                    default -> null;
+                };
+            } catch (Exception e) {
+                raiseError(
+                        e.getMessage(),
+                        ctx.getStart().getLine()
+                );
+            }
+            return res;
         }
         return result;
     }
 
     @Override // Power
     public Object visitExpr_7(AniLangParser.Expr_7Context ctx) {
+        if( ctx.expr_8(0) == null ) {
+            raiseError(
+                    "Expected expression, but got null",
+                    ctx.getStart().getLine()
+            );
+        }
+
         Expression left = (Expression) this.visitExpr_8(ctx.expr_8(0));
 
         if( ctx.Power(0) != null ) {
@@ -351,7 +431,15 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
             for(int i=1; i<ctx.expr_8().size(); i++) {
                 Expression right =  (Expression) this.visitExpr_8(ctx.expr_8(i));
 
-                left = left.pow( right );
+                try {
+                    left = left.pow( right );
+                } catch (Exception e) {
+                    raiseError(
+                            e.getMessage(),
+                            ctx.getStart().getLine()
+                    );
+                }
+
             }
         }
         return left;
@@ -372,6 +460,10 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
         } else if( ctx.Open_Parenthesis() != null ) {
             return visitExpr(ctx.expr());
         }
+        raiseError(
+                "Expected expression, but got unidentified id",
+                ctx.getStart().getLine()
+        );
         return null;
     }
 
@@ -461,8 +553,10 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
             fw.flush();
             fw.close();
         } catch (IOException e) {
-            System.out.println("An error occurred when creating output file.");
-            e.printStackTrace();
+            raiseError(
+                    "An error occurred when creating output file.",
+                    ctx.getStart().getLine()
+            );
         }
 
         return super.visitBuildScene(ctx);
@@ -473,12 +567,11 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
         try {
             var = getCurrentScope().getOuterVariable(id);
         } catch (Exception e) {
-            e.printStackTrace();
+            raiseError(
+                    e.getMessage(),
+                    line
+            );
         }
-        if( var == null ) raiseError(
-                String.format("Variable named %s is not defined in this scope", id),
-                line
-        );
 
         return new Expression(var.getType(), var.getValue());
     }

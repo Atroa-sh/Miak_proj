@@ -1,2 +1,7 @@
 
-println 1+ true;
+int::b = 3;
+
+if(b > 2) then
+    int::a = outer a + 2;
+    println a;
+end
