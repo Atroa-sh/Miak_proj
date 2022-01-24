@@ -25,6 +25,13 @@ import java.util.*;
 // TODO: Dokumentacja
 // TODO: Kompilator (program)
 
+// TODO: Błędy
+//      Expression ------------> Filip
+//      Scene -----------------> Kacper
+//      Scope -----------------> Kacper --------------------------- ✓
+//      Box   -----------------> Kacper
+//      Shape -----------------> Kacper
+
 public class TranslatorVisitor extends AniLangParserBaseVisitor {
     private AniLangParser parser;
 
