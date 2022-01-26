@@ -33,6 +33,6 @@ public class Variable {
         if( this.type == exp.type ) {
             this.value = exp.value;
 
-        } else throw new Exception("Invalid type");
+        } else throw new Exception(String.format("Invalid type. Expected %s, got %s", this.type, exp.type));
     }
 }

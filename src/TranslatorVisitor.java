@@ -587,7 +587,10 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
         try {
             getCurrentScope().declareVariable(result);
         } catch (Exception e) {
-            e.printStackTrace();
+            raiseError(
+                    e.getMessage(),
+                    ctx.getStart().getLine()
+            );
         }
 
         if( ctx.expr() != null ) {
@@ -596,7 +599,10 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
             try {
                 result.assignValue(assignment);
             } catch (Exception e) {
-                e.printStackTrace();
+                raiseError(
+                        e.getMessage(),
+                        ctx.getStart().getLine()
+                );
             }
             return assignment;
         }
@@ -613,7 +619,10 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
         try {
             getCurrentScope().assignVariable(ctx.Id().getText(), assignment);
         } catch (Exception e) {
-            e.printStackTrace();
+            raiseError(
+                    e.getMessage(),
+                    ctx.getStart().getLine()
+            );
         }
 
         return assignment;

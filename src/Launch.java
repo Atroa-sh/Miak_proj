@@ -2,14 +2,12 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.io.IOException;
-
 import static org.antlr.v4.runtime.CharStreams.fromFileName;
 
 public class Launch {
     public static void main(String[] args) {
         try {
-            String source = "tests/test1.txt"; //args[0];
+            String source = args[0];
             CharStream cs = fromFileName(source);
             AniLangLexer lexer = new AniLangLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
@@ -24,7 +22,7 @@ public class Launch {
             visitor.visit(tree);
 
         } catch (Exception e) {
-            e.printStackTrace(); //aby pozbyc sie wyswietlania niepokrytych bledów javowych
+//            e.printStackTrace(); //aby pozbyc sie wyswietlania niepokrytych bledów javowych
         }
     }
 }
