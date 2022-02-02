@@ -5,8 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-// TODO: Return ma zwracać wartość i kończyć działanie funkcji
-// TODO: Dokończyć operatory boolowskie i arytmetyczne
+// TODO: Return ma zwracać wartość i kończyć działanie funkcji ---- ✕
+// TODO: Dokończyć operatory boolowskie i arytmetyczne ------------ ✓
 //      bool -> Tłuszcz ------------------------------------------- ✓
 //      aryt -> Kacper  ------------------------------------------- ✓
 // TODO: Przekazywanie argumentów do funkcji ---------------------- ✓
@@ -18,19 +18,21 @@ import java.util.*;
 //      while -> Kacper  ------------------------------------------ ✓
 // TODO:
 //      Tłuszcz -> else do if-a ----------------------------------- ✓
-// TODO: Podstawy x3dom
-// TODO: * Obsługa błędów
+// TODO: Podstawy x3dom ------------------------------------------- ✓
+// TODO: * Obsługa błędów ----------------------------------------- ✓
 // TODO: * Rzutowanie
 
-// TODO: Dokumentacja
-// TODO: Kompilator (program)
+// TODO: Dokumentacja --------------------------------------------- ✓
+// TODO: Kompilator (program) ------------------------------------- ✓
 
 // TODO: Błędy
-//      Expression ------------> Filip
+//      Expression ------------> Filip  --------------------------- ✓
 //      Scene -----------------> Kacper --------------------------- ✓
 //      Scope -----------------> Kacper --------------------------- ✓
 //      Box   -----------------> Kacper --------------------------- ✓
-//      Shape -----------------> Kacper
+//      Shape -----------------> Kacper --------------------------- ✓
+
+// TODO: correct double, modulo, castowanie
 
 public class TranslatorVisitor extends AniLangParserBaseVisitor {
     private AniLangParser parser;
@@ -522,6 +524,8 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
             }
             else args[i] = (int)tmp.value;
         }
+
+        // TODO: correct double, modulo, castowanie
 
         this.scene.addShape(new Box(
                 args[0],

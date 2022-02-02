@@ -7,7 +7,8 @@ import static org.antlr.v4.runtime.CharStreams.fromFileName;
 public class Launch {
     public static void main(String[] args) {
         try {
-            String source = args[0];
+//            String source = args[0];
+            String source = "tests/test1.txt";
             CharStream cs = fromFileName(source);
             AniLangLexer lexer = new AniLangLexer(cs);
             CommonTokenStream token = new CommonTokenStream(lexer);
