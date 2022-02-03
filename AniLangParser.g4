@@ -49,7 +49,7 @@ expr_4
     ;
 
 expr_5
-    : expr_6 ( Star_Slash expr_6 )*
+    : expr_6 ( Star_Slash_Mod expr_6 )*
     ;
 
 expr_6

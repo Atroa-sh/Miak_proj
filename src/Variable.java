@@ -32,7 +32,13 @@ public class Variable {
     public void assignValue(Expression exp) throws Exception {
         if( this.type == exp.type ) {
             this.value = exp.value;
-
-        } else throw new Exception(String.format("Invalid type. Expected %s, got %s", this.type, exp.type));
+        }
+        else if(this.type == Type.doubleType && exp.type == Type.intType){
+            this.value = (Double) exp.value;
+        }
+        else if(this.type == Type.intType && exp.type == Type.doubleType){
+            this.value = (Integer) exp.value;
+        }
+        else throw new Exception(String.format("Invalid type. Expected %s, got %s", this.type, exp.type));
     }
 }
