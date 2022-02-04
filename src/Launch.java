@@ -23,7 +23,7 @@ public class Launch {
             visitor.visit(tree);
 
         } catch (Exception e) {
-//            e.printStackTrace(); //aby pozbyc sie wyswietlania niepokrytych bledów javowych
+            e.printStackTrace(); //aby pozbyc sie wyswietlania niepokrytych bledów javowych
         }
     }
 }

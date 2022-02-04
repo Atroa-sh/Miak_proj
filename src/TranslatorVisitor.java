@@ -5,37 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-// TODO: Return ma zwracać wartość i kończyć działanie funkcji ---- ✕
-// TODO: Dokończyć operatory boolowskie i arytmetyczne ------------ ✓
-//      bool -> Tłuszcz ------------------------------------------- ✓
-//      aryt -> Kacper  ------------------------------------------- ✓
-// TODO: Przekazywanie argumentów do funkcji ---------------------- ✓
-// TODO: Przekazywanie scope-ów do funkcji ------------------------ ✓
 // TODO:
-//      Kacper -> Operator Outer ---------------------------------- ✓
-// TODO: Pętle
-//      for   -> Tłuszcz ------------------------------------------ ✓
-//      while -> Kacper  ------------------------------------------ ✓
-// TODO:
-//      Tłuszcz -> else do if-a ----------------------------------- ✓
-// TODO: Podstawy x3dom ------------------------------------------- ✓
-// TODO: * Obsługa błędów ----------------------------------------- ✓
-// TODO: * Rzutowanie
-
-// TODO: Dokumentacja --------------------------------------------- ✓
-// TODO: Kompilator (program) ------------------------------------- ✓
-
-// TODO: Błędy
-//      Expression ------------> Filip  --------------------------- ✓
-//      Scene -----------------> Kacper --------------------------- ✓
-//      Scope -----------------> Kacper --------------------------- ✓
-//      Box   -----------------> Kacper --------------------------- ✓
-//      Shape -----------------> Kacper --------------------------- ✓
-
-// TODO:
-//  correct double,
-//  modulo, --------------------------- ✓
-//  castowanie --------------------------- ✓ trza sprawdzic bo prucz nie wchodzenia w exception w variable nic sie praktycznie nie zmienia
+//  castowanie --------------------------- jeszcze nie działa
 
 public class TranslatorVisitor extends AniLangParserBaseVisitor {
     private AniLangParser parser;
@@ -487,8 +458,6 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
 
     @Override
     public Object visitCreateScene(AniLangParser.CreateSceneContext ctx) {
-        // TODO: czy Scene ma dwa argumenty
-        // TODO: czy argumenty to int
         int[] args = new int[2];
         if(ctx.expr().size()!=2) raiseError(
                 String.format("Wrong number of arguments. Got %d, expected 2", ctx.expr().size()),
@@ -511,10 +480,7 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
 
     @Override
     public Object visitCreateBox(AniLangParser.CreateBoxContext ctx) {
-        // TODO: czy Box ma 9 argumentów
-        // TODO: czy argumenty to int
-        // TODO: czy scena powstala wczesniej
-        int[] args = new int[9];
+        double[] args = new double[9];
         if(ctx.expr().size()!=9) raiseError(
                 "Wrong number of arguments. Got %d, expected 9",
                 ctx.getStart().getLine()
@@ -526,10 +492,8 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
             if(tmp.type == Type.boolType){
                 raiseError("Wrong argument type",ctx.getStart().getLine());
             }
-            else args[i] = (int)tmp.value;
+            else args[i] = tmp.type == Type.intType ? 1. * (int) tmp.value : (double) tmp.value;
         }
-
-        // TODO: correct double, modulo, castowanie
 
         this.scene.addShape(new Box(
                 args[0],

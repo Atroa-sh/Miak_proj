@@ -1,9 +1,11 @@
-public class Box extends Shape{
-    protected final int size_x;
-    protected final int size_y;
-    protected final int size_z;
+import java.util.Locale;
 
-    public Box(int pos_x, int pos_y, int pos_z, int size_x, int size_y, int size_z, int r, int g, int b) {
+public class Box extends Shape{
+    protected final double size_x;
+    protected final double size_y;
+    protected final double size_z;
+
+    public Box(double pos_x, double pos_y, double pos_z, double size_x, double size_y, double size_z, double r, double g, double b) {
         super(pos_x, pos_y, pos_z, r, g, b);
 
         this.size_x = size_x;
@@ -13,8 +15,8 @@ public class Box extends Shape{
 
     @Override
     protected String start() {
-        return super.start() + String.format(
-                "<box size='%d %d %d'>\n",
+        return super.start() + String.format(Locale.US,
+                "<box size='%f %f %f'>\n",
                 this.size_x, this.size_y, this.size_z
         );
     }

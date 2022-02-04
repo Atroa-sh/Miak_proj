@@ -1,13 +1,11 @@
-createScene(1000, 700);
+createScene(1000, 800);
 
-for(int::y=0; y<5*8; y=y+5) then
-    for(int::x=0; x<5*8; x=x+5) then
-        double::xd = (x+y)+0.0;
-
-        if( (x+y)/2 == xd/2 ) then
-            createBox(x,y,0, 4,4,4, 1,1,0);
+for(int::y=-5; y<=5; y=y+1) then
+    for(int::x=-5; x<=5; x=x+1) then
+        if( (x+y)%2 == 0 ) then
+            createBox(x,y,0, 0.9,0.9,0.9, (x+5)/10.,(y+5)/10.,(x+y+10)/20.);
         end else then
-            createBox(x,y,0, 4,4,4, 1,0,0);
+            createBox(x,y,0, 0.9,0.9,0.9, (y+5)/10.,(x+5)/10.,(x+y+10)/20.);
         end
     end
 end

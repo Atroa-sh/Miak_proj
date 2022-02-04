@@ -19,7 +19,7 @@ public class AniLangParser extends Parser {
 		Open_Parenthesis=1, Close_Parenthesis=2, Open_Bracket=3, Close_Bracket=4, 
 		Open_Square_Bracket=5, Close_Square_Bracket=6, Dot=7, Comma=8, Semicolon=9, 
 		TypeSeparator=10, Assign=11, ComparationToken=12, Not=13, Plus=14, Minus=15, 
-		Star_Slash=16, Power=17, And=18, Or=19, Then=20, End=21, If=22, Else_If=23, 
+		Star_Slash_Mod=16, Power=17, And=18, Or=19, Then=20, End=21, If=22, Else_If=23, 
 		Else=24, For=25, While=26, Outer=27, Return=28, Break=29, Continue=30, 
 		Print=31, Println=32, CreateScene=33, CreateBox=34, BuildScene=35, Type=36, 
 		White_Sign=37, Int=38, Double=39, Number=40, Bool=41, Id=42, Comment=43;
@@ -60,10 +60,10 @@ public class AniLangParser extends Parser {
 			null, "Open_Parenthesis", "Close_Parenthesis", "Open_Bracket", "Close_Bracket", 
 			"Open_Square_Bracket", "Close_Square_Bracket", "Dot", "Comma", "Semicolon", 
 			"TypeSeparator", "Assign", "ComparationToken", "Not", "Plus", "Minus", 
-			"Star_Slash", "Power", "And", "Or", "Then", "End", "If", "Else_If", "Else", 
-			"For", "While", "Outer", "Return", "Break", "Continue", "Print", "Println", 
-			"CreateScene", "CreateBox", "BuildScene", "Type", "White_Sign", "Int", 
-			"Double", "Number", "Bool", "Id", "Comment"
+			"Star_Slash_Mod", "Power", "And", "Or", "Then", "End", "If", "Else_If", 
+			"Else", "For", "While", "Outer", "Return", "Break", "Continue", "Print", 
+			"Println", "CreateScene", "CreateBox", "BuildScene", "Type", "White_Sign", 
+			"Int", "Double", "Number", "Bool", "Id", "Comment"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -1018,9 +1018,9 @@ public class AniLangParser extends Parser {
 		public Expr_6Context expr_6(int i) {
 			return getRuleContext(Expr_6Context.class,i);
 		}
-		public List<TerminalNode> Star_Slash() { return getTokens(AniLangParser.Star_Slash); }
-		public TerminalNode Star_Slash(int i) {
-			return getToken(AniLangParser.Star_Slash, i);
+		public List<TerminalNode> Star_Slash_Mod() { return getTokens(AniLangParser.Star_Slash_Mod); }
+		public TerminalNode Star_Slash_Mod(int i) {
+			return getToken(AniLangParser.Star_Slash_Mod, i);
 		}
 		public Expr_5Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1053,11 +1053,11 @@ public class AniLangParser extends Parser {
 			setState(174);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==Star_Slash) {
+			while (_la==Star_Slash_Mod) {
 				{
 				{
 				setState(170);
-				match(Star_Slash);
+				match(Star_Slash_Mod);
 				setState(171);
 				expr_6();
 				}
