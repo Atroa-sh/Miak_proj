@@ -46,7 +46,8 @@ Minus                   : '-';
 
 fragment Star           : '*';
 fragment Slash          : '/';
-Star_Slash              : (Star | Slash);
+fragment Mod            : '%';
+Star_Slash_Mod              : (Star | Slash | Mod);
 
 Power                    : '**';
 

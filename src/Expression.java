@@ -123,6 +123,32 @@ public class Expression {
         return new Expression(Type.intType, (Integer)this.value / (Integer) right.value);
     }
 
+    public Expression mod(Expression right) throws Exception {
+
+        // incompatible types error
+        if((this.type  != Type.intType && this.type  != Type.doubleType)
+                ||
+                (right.type != Type.intType  && right.type != Type.doubleType))
+            throw new Exception(String.format("No viable operator %% for types %s and %s", this.type.toString(), right.type.toString()));
+
+        // dividing by 0
+        if(
+                (right.type == Type.intType    && (Integer) right.value == 0) ||
+                        (right.type == Type.doubleType && (Double)  right.value == 0.)
+        ) throw new Exception("Cannot modulo by 0");
+
+        if(this.type == Type.doubleType && right.type == Type.intType){
+            return new Expression(Type.doubleType, (Double)this.value % (double) (Integer)right.value);
+        }
+        else if(this.type == Type.intType && right.type == Type.doubleType){
+            return new Expression(Type.doubleType, (double) (Integer) this.value % (Double)right.value);
+        }
+        else if(this.type == Type.doubleType){
+            return new Expression(Type.doubleType, (Double)this.value % (Double)right.value);
+        }
+        return new Expression(Type.intType, (Integer)this.value % (Integer) right.value);
+    }
+
     public Expression sub(Expression right) throws Exception {
 
         // incompatible types error

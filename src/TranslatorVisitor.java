@@ -32,7 +32,10 @@ import java.util.*;
 //      Box   -----------------> Kacper --------------------------- ✓
 //      Shape -----------------> Kacper --------------------------- ✓
 
-// TODO: correct double, modulo, castowanie
+// TODO:
+//  correct double,
+//  modulo, --------------------------- ✓
+//  castowanie --------------------------- ✓ trza sprawdzic bo prucz nie wchodzenia w exception w variable nic sie praktycznie nie zmienia
 
 public class TranslatorVisitor extends AniLangParserBaseVisitor {
     private AniLangParser parser;
@@ -364,9 +367,10 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
                 Expression right = (Expression) this.visitExpr_6(ctx.expr_6(i));
 
                 try {
-                    left = switch(ctx.Star_Slash(i-1).getText()) {
+                    left = switch(ctx.Star_Slash_Mod(i-1).getText()) {
                         case "*" -> left.mul(right);
                         case "/" -> left.div(right);
+                        case "%" -> left.mod(right);
                         default -> null;
                     };
                 } catch (Exception e) {
