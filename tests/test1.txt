@@ -1,4 +1,4 @@
-double::foo(int::a) then
+int::foo(int::a) then
     return a;
 end
 

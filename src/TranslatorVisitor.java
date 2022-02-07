@@ -125,14 +125,17 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
                     ));
 
                     // assignment
-                    if( value.type != func.getArgTypes().get(parNum) ) {
-//                        raiseError(String.format(
-//                                "Parameter %d to function %s is type %s, but got %s",
-//                                parNum,
-//                                func.getId(),
-//                                func.getArgTypes().get(parNum),
-//                                value.type
-//                        ), ctx.getStart().getLine());
+                    if(
+                            (value.type == Type.boolType && func.getArgTypes().get(parNum) != Type.boolType) ||
+                            (value.type != Type.boolType && func.getArgTypes().get(parNum) == Type.boolType)
+                    ) {
+                        raiseError(String.format(
+                                "Parameter %d to function %s is type %s, but got %s",
+                                parNum,
+                                func.getId(),
+                                func.getArgTypes().get(parNum),
+                                value.type
+                        ), ctx.getStart().getLine());
                     }
 
                     functionArgumentsScope.getVariable(
