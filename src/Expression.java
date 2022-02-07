@@ -39,6 +39,10 @@ public class Expression {
         type = Type.intType;
     }
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     public Expression add(Expression right) throws Exception {
 
         // incompatible types error

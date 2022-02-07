@@ -1,3 +1,6 @@
+import static java.lang.Math.floor;
+import static java.lang.Math.round;
+
 public class Variable {
 
     private Type type;
@@ -34,10 +37,10 @@ public class Variable {
             this.value = exp.value;
         }
         else if(this.type == Type.doubleType && exp.type == Type.intType){
-            this.value = (Double) exp.value;
+            this.value = 1. * ( Integer ) exp.value;
         }
         else if(this.type == Type.intType && exp.type == Type.doubleType){
-            this.value = (Integer) exp.value;
+            this.value = round(floor( Double.parseDouble(exp.value.toString()) ));
         }
         else throw new Exception(String.format("Invalid type. Expected %s, got %s", this.type, exp.type));
     }

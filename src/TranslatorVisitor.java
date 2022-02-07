@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+import static java.lang.Math.round;
+
 // TODO:
 //  castowanie --------------------------- jeszcze nie działa
 
@@ -124,13 +126,13 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
 
                     // assignment
                     if( value.type != func.getArgTypes().get(parNum) ) {
-                        raiseError(String.format(
-                                "Parameter %d to function %s is type %s, but got %s",
-                                parNum,
-                                func.getId(),
-                                func.getArgTypes().get(parNum),
-                                value.type
-                        ), ctx.getStart().getLine());
+//                        raiseError(String.format(
+//                                "Parameter %d to function %s is type %s, but got %s",
+//                                parNum,
+//                                func.getId(),
+//                                func.getArgTypes().get(parNum),
+//                                value.type
+//                        ), ctx.getStart().getLine());
                     }
 
                     functionArgumentsScope.getVariable(
@@ -424,6 +426,7 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
 
     @Override // atom | Outer id | function_call | Open_Parenthesis expr Close_Parenthesis
     public Object visitExpr_8(AniLangParser.Expr_8Context ctx) {
+
         if( ctx.atom() != null ) {
             return this.visitAtom(ctx.atom());
 
@@ -432,6 +435,23 @@ public class TranslatorVisitor extends AniLangParserBaseVisitor {
 
         } else if( ctx.function_call() != null ) {
             this.visitFunction_call(ctx.function_call());
+
+            try {
+                currentlyReturnedExpression.setType( this.getCurrentScope()
+                        .getFunction(
+                                ctx
+                                        .function_call()
+                                        .Id()
+                                        .getText()
+                        ).getReturnType());
+
+            } catch (Exception e) {
+                raiseError(
+                        e.getMessage(),
+                        ctx.getStart().getLine()
+                );
+            }
+
             return currentlyReturnedExpression;
 
         } else if( ctx.Open_Parenthesis() != null ) {
